@@ -34,12 +34,18 @@ def blur_jpge(file_name):
 def thumbnail_jpge(file_name):
 
     size = (128, 128)
+
+    resource_path = 'C:/Users/yuanlili/PycharmProjects/PyImageEncrypt/resource/'
+    tmp_jpg_name = 'tmp_001.jpg'
+    tmp_file=resource_path+tmp_jpg_name
+
     try:
-        im = Image.open("Lenna.png")
+        im = Image.open(file_name)
     except:
         print
         "Unable to load image"
 
     im.thumbnail(size)
-    im.save(saved)
+    im.save(tmp_file)
+    im = Image.open(tmp_file)
     im.show()
