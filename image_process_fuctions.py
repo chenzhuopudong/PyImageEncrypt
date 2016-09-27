@@ -1,7 +1,7 @@
 import os,sys
 from PIL import Image,ImageFilter,ImageDraw
 import datetime
-def read_jpeg(input_file):
+def read_image(input_file):
 
     try:
         im = Image.open(input_file)
@@ -12,10 +12,12 @@ def read_jpeg(input_file):
     print("The details of", input_file )
     im.show()
     print (im.size)
-    print (im.bits, im.size, im.format, im.mode)
+    (x_len,y_len) = im.size
+#    print (im.bits, im.format, im.mode)
+    print( im.format, im.mode )
+    print ( 'x=',x_len,'\ty=',y_len)
 
-
-def blur_jpge(input_file):
+def blur_image(input_file):
 
     # Load an image from the hard drive
     try:
@@ -35,7 +37,7 @@ def blur_jpge(input_file):
     # save the new image
     #blurred.save("blurred.png")
 
-def thumbnail_jpge(input_file,output_file):
+def thumbnail_image(input_file, output_file):
 
     size = (128, 128)
 
