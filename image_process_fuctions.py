@@ -104,3 +104,35 @@ def get_data_for_point(input_file,pos_x,pos_y):
 
     pixels = im.load()
     print (pixels[position])
+
+
+def make_white_transparent(input_file,output_file):
+
+    img = Image.open(input_file)
+    img = img.convert("RGBA")
+    datas = img.getdata()
+
+    newData = []
+    for item in datas:
+        if item[0] == 255 and item[1] == 255 and item[2] == 255:
+            newData.append((255, 255, 255, 0))
+        else:
+            newData.append(item)
+
+    img.putdata(newData)
+    img.save(output_file, "PNG")
+
+
+def process_png(input_file,output_file):
+
+    Im = Image.open(input_file)
+    Im = Im.convert("RGBA")
+    datas = Im.getdata()
+
+    new_data = []
+
+    for item in datas:
+        new_data.append((item[0]&254, item[1]&254,  item[2]&254,  item[3]&254) )
+
+    Im.putdata(new_data)
+    Im.save(output_file, "PNG")
