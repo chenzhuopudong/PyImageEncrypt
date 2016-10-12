@@ -21,5 +21,6 @@ run_text_test()
 
 #tmp test section
 tmp_info = InfoBody('abc我吃了defe511656很多')
-tmp_info.save_data_to_file('tmp003.bin')
-tmp_info.show_hex()
+#tmp_info.save_data_to_file('tmp003.bin')
+#tmp_info.show_hex()
+tmp_info.byte_to_4bit_tuple()

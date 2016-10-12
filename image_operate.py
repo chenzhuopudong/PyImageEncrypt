@@ -25,6 +25,7 @@ class InfoBody:
     def __init__(self,info):
         self.info = info
         self.hex_for_file = bytes(info.encode())
+        self.info_as_tuple =[]
 
     def show_hex(self):
         print('Information is :',self.info)
@@ -39,4 +40,20 @@ class InfoBody:
         self.output_file.close()
 
     def byte_to_4bit_tuple(self):
-        self = self;
+        index_for_tuple = 0
+        tmp_array = [0,0,0,0]
+        for i in range(len(self.hex_for_file)):
+            tmp_value = self.hex_for_file[i]
+            print(bin(tmp_value))
+            for j in range (1,3):
+                for k in range (0,4):
+                    tmp_array[k] = (tmp_value&(1<<k))>>k
+                self.info_as_tuple.append((tmp_array[0],tmp_array[1],tmp_array[2],tmp_array[3]))
+                print(self.info_as_tuple[index_for_tuple])
+                index_for_tuple+=1
+                tmp_value = tmp_value>>4
+
+
+
+
+
