@@ -136,3 +136,12 @@ def process_png(input_file,output_file):
 
     Im.putdata(new_data)
     Im.save(output_file, "PNG")
+
+def read_png_points(input_file):
+
+    Im = Image.open(input_file)
+    Im = Im.convert("RGBA")
+    datas = Im.getdata()
+
+    for item in datas:
+        print (item)

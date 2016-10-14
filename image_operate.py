@@ -1,18 +1,68 @@
+from PIL import Image
+from log import *
 
 class PNGimage:
 
 
     new_data = []
-
+    tumple_out = []
+    module_log = logs(1)
+    data_offset = 4
     def __init__(self,src_file,result_file):
         self.Im = Image.open(src_file)
         self.Im = self.Im.convert("RGBA")
         self.datas = self.Im.getdata()
         self.result_file = result_file
+        self.info_length = 0
 
     def clean_LSB(self):
+        self.new_data = []
         for item in self.datas:
             self.new_data.append((item[0] & 254, item[1] & 254, item[2] & 254, item[3] & 254))
+
+    def combine_LSB(self, input_tuple_array):
+        self.new_data = []
+
+        for i in range(len(input_tuple_array)):
+            tmp_tuple = self.datas[i]
+            self.module_log.minor_log(tmp_tuple)
+            self.module_log.minor_log(input_tuple_array[i])
+            self.new_data.append((tmp_tuple[0] & 254 | input_tuple_array[i][0],
+                                  tmp_tuple[1] & 254 | input_tuple_array[i][1],
+                                  tmp_tuple[2] & 254 | input_tuple_array[i][2],
+                                  tmp_tuple[3] & 254 | input_tuple_array[i][3]))
+            self.module_log.minor_log((tmp_tuple[0] & 254 | input_tuple_array[i][0],
+                                  tmp_tuple[1] & 254 | input_tuple_array[i][1],
+                                  tmp_tuple[2] & 254 | input_tuple_array[i][2],
+                                  tmp_tuple[3] & 254 | input_tuple_array[i][3]))
+
+
+    def get_length(self):
+        tmp_value = 0
+        result = 0
+        self.module_log.minor_log("******************")
+
+        for i in range(0,4):
+            tmp_value = 0
+            for j in range(0,4):
+                tmp_value +=(self.datas[i][j] & 1) << j
+            tmp_value <<= (4*i)
+            result += tmp_value
+        self.module_log.debug_log('Length of data is:'+str(result))
+        self.info_length = result
+
+    def get_LSB_by_length(self, length):
+
+        for i in range(length):
+            i += self.data_offset
+            self.tumple_out.append((self.datas[i][0] & 1,
+                                    self.datas[i][1] & 1,
+                                    self.datas[i][2] & 1,
+                                    self.datas[i][3] & 1))
+            self.module_log.minor_log((self.datas[i][0] & 1,
+                                    self.datas[i][1] & 1,
+                                    self.datas[i][2] & 1,
+                                    self.datas[i][3] & 1))
 
     def save_result(self):
         self.Im.putdata(self.new_data)
@@ -21,11 +71,33 @@ class PNGimage:
 class InfoBody:
 
     file_folder='C:/tmp/resource/'
+    module_log = logs(2)
 
     def __init__(self,info):
         self.info = info
         self.hex_for_file = bytes(info.encode())
         self.info_as_tuple =[]
+        self.info_length = 0
+
+    def get_4bit_to_tumple_array(self,input_value):
+        bit0_to_3 = [0, 0, 0, 0]
+        for i in range(0, 4):
+            bit0_to_3[i] = (input_value & (1 << i)) >> i
+        tmp_tuple = (bit0_to_3[0], bit0_to_3[1], bit0_to_3[2], bit0_to_3[3])
+        print(tmp_tuple)
+        self.info_as_tuple.append(tmp_tuple)
+
+
+    def write_length_to_head(self):
+        length_value = len(self.hex_for_file)*2 #Everybyte requires 2 points
+        self.info_length = length_value
+        print(self.info_length)
+
+        for i in range(0, 4):
+            self.get_4bit_to_tumple_array(length_value)
+            length_value = length_value >> 4
+
+        print(len(self.info_as_tuple))
 
     def show_hex(self):
         print('Information is :',self.info)
@@ -39,19 +111,17 @@ class InfoBody:
         self.output_file.write(self.hex_for_file)
         self.output_file.close()
 
-    def byte_to_4bit_tuple(self):
-        index_for_tuple = 0
-        tmp_array = [0,0,0,0]
+        #def integer_to_4bit_tuple(self, eight_bit_value):
+    def bytes_to_4bit_tuple(self):
         for i in range(len(self.hex_for_file)):
             tmp_value = self.hex_for_file[i]
             print(bin(tmp_value))
-            for j in range (1,3):
-                for k in range (0,4):
-                    tmp_array[k] = (tmp_value&(1<<k))>>k
-                self.info_as_tuple.append((tmp_array[0],tmp_array[1],tmp_array[2],tmp_array[3]))
-                print(self.info_as_tuple[index_for_tuple])
-                index_for_tuple+=1
-                tmp_value = tmp_value>>4
+            for j in range(0, 2):
+                self.get_4bit_to_tumple_array(tmp_value)
+                tmp_value = tmp_value >> 4
+        print(len(self.info_as_tuple))
+
+
 
 
 
