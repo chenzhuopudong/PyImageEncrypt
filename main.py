@@ -46,7 +46,6 @@ receiver_info = InfoBody('')
 receiver_info.tuple_to_bytes(result_png.tumple_out)
 receiver_info.hex_to_string()
 
-#sender_info.read_info_back('tmp004.txt')
 #read_png_points(output_file)
 
 #note1, at first we needn't encrypt, and we don't need to have length at all, we just put

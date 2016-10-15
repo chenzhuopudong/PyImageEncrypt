@@ -40,7 +40,6 @@ class PNGimage:
     def get_length(self):
         tmp_value = 0
         result = 0
-        self.module_log.minor_log("******************")
 
         for i in range(0,4):
             tmp_value = 0
