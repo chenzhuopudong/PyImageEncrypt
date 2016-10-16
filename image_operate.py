@@ -78,6 +78,7 @@ class InfoBody:
         self.info_length = 0
         self.hex_out = []
         self.out_info = []
+        self.info_body =[]
 
     def set_info(self, info):
         self.info = info
@@ -148,4 +149,5 @@ class InfoBody:
                 tmp_byte = 0
 
     def hex_to_string(self):
-        self.module_log.debug_log((bytes(self.hex_out).decode('utf-8')))
+        self.info_body = (bytes(self.hex_out).decode('utf-8'))
+        self.module_log.debug_log(self.info_body)
