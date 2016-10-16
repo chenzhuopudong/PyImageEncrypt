@@ -13,9 +13,7 @@ if (0):
 
 
 
-app_main = info_in_out()
-app_main.mainframe_init()
-app_main.button_init()
+app_main = InOutMainWindow()
 app_main.root.mainloop()
 
 
