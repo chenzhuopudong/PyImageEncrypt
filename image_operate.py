@@ -5,7 +5,7 @@ from log import *
 class PNGimage:
     new_data = []
     tumple_out = []
-    module_log = logs(3)
+    module_log = logs(5)
     data_offset = 4
 
     def __init__(self, src_file, result_file):
@@ -69,7 +69,7 @@ class PNGimage:
 
 class InfoBody:
     file_folder = 'C:/tmp/resource/'
-    module_log = logs(3)
+    module_log = logs(5)
 
     def __init__(self, info):
         self.info = info

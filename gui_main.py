@@ -33,7 +33,7 @@ class InOutMainWindow:
 
 class DataInWindow:
     def __init__(self, parentWindow):
-        self.module_log = logs(1)
+        self.module_log = logs(5)
         self.root = Toplevel()
         self.parent = parentWindow
         self.root.title("Data In")
@@ -105,7 +105,7 @@ class DataInWindow:
 
 class DataOutWindow:
     def __init__(self, parentWindow):
-        self.module_log = logs(1)
+        self.module_log = logs(5)
         self.root = Toplevel()
         self.parent = parentWindow
         self.root.title("Data out")
